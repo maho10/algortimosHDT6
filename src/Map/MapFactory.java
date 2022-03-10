@@ -1,33 +1,18 @@
-
 package Map;
-import java.util.Map;
-import java.util.TreeMap;
+
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
-public class MapFactory {
+public class MapFactory<E,S> {
 
-    public Map<String, String> getMap(int mapType){
-        Map<String, String> myMap = null;
-
-        switch (mapType) {
-            //Hashmap
-            case 1:
-                myMap = new HashMap<String, String>();
-                break;
-
-            //TreeMap
-            case 2:
-                myMap = new TreeMap<String, String>();
-                break;
-
-            //LinkedHashMap
-            default:
-                myMap = new LinkedHashMap<String, String>();
-                break;
-        }
-
-        return myMap;
-        
+    public Map<E,S> getMap(int mapType){
+        return switch (mapType) {
+            case 1 -> new HashMap<>();
+            case 2 -> new TreeMap<>();
+            case 3 -> new LinkedHashMap<>();
+            default -> null;
+        };
     }
 }

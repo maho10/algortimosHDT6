@@ -1,9 +1,7 @@
-import Map.HashMapController;
 import Map.MapFactory;
 
 import java.util.Scanner;
 import java.util.Map;
-import javax.security.auth.DestroyFailedException;
 
 import java.io.IOException;
 

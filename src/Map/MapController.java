@@ -1,17 +1,26 @@
 package Map;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Locale;
+import java.util.Map;
 
-public class HashMapController implements Map {
-    HashMap <String, Integer> cards = new HashMap<>();
-    HashMap <Integer, ArrayList<String>> collection = new HashMap<>();
+public class MapController<E, S> {
+
+    private MapFactory<String, Integer> map = new MapFactory<String, Integer>();
+    private MapFactory<Integer, ArrayList<String>> map2 = new MapFactory<Integer, ArrayList<String>>();
+    private Map<String, Integer> cards;
+    private Map <Integer, ArrayList<String>> collection;
+    private Map<String, Integer> userCC;
+
+
+    public MapController(int type){
+        cards = map.getMap(type);
+        userCC = map.getMap(type);
+        collection = map2.getMap(type);
+    }
 
     public void getCards (String url) throws IOException {
         ArrayList<String> cardSet = new ArrayList<>();
@@ -62,7 +71,6 @@ public class HashMapController implements Map {
         StringBuilder spell = new StringBuilder("Hechizos\n-------------------------\n");
         StringBuilder trap = new StringBuilder("Trampas\n-------------------------\n");
         ArrayList<String> userCollection = collection.get(user);
-        HashMap<String, Integer> userCC = new HashMap<>();
 
         Collections.sort(userCollection);
         String repeat = "";
@@ -131,5 +139,4 @@ public class HashMapController implements Map {
         }
         return String.valueOf(card);
     }
-
 }
