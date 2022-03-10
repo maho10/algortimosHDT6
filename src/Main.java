@@ -13,11 +13,54 @@ public class Main {
 
         v.bienvenida();
         int map_type = v.solicitar_map_type();
-        int desicion_menu = v.menu_principal();
+        int desicion_menu = 0;
 
         myMap = myMapFactory.getMap(map_type);
 
-        
+        boolean continuar_menu_principal = true;
+
+        while(continuar_menu_principal){
+            desicion_menu = v.menu_principal();
+
+            switch (desicion_menu) {
+
+                //Agregar Carta a coleccion
+                case 1:
+                    
+                    break;
+
+                //Mostrar tipo de Carta especifica
+                case 2:
+
+                    break;
+
+                //Mostrar coleccion de usuario
+                case 3:
+                    
+                    break;
+
+                //Mostrar coleccion de usuario ordenada
+                case 4:
+
+                    break;
+
+                //Mostrar todas las cartas existentes
+                case 5:
+                    
+                    break;
+
+                //Mostrar todas las cartas existentes ordenadas
+                case 6:
+
+                    break;
+            
+                //Finalizar batalla
+                default:
+                    continuar_menu_principal = false;
+                    v.despedida();
+                    break;
+            }
+        }
 
     }
 }
@@ -101,10 +144,22 @@ class Vista{
         System.out.println("4. Mostrar coleccion de usuario ordenada.");
         System.out.println("5. Mostrar todas las cartas existentes.");
         System.out.println("6. Mostrar todas las cartas existentes ordenadas.");
+        System.out.println("7. Finalizar batalla.");
         System.out.println();
         String s = "Ingrese su desicion: ";
-        int desision = solicitar_int(s, 1, 6);
+        int desision = solicitar_int(s, 1, 7);
         return desision;
+    }
+
+
+    public void despedida(){
+        System.out.println();
+        System.out.println("--------------------------------------------------------");
+        System.out.println("Muchas gracias por utilizar nuestro programa!!!");
+        System.out.println();
+        System.out.println("Vuelve pronto!");
+        System.out.println("--------------------------------------------------------");
+        System.out.println();
     }
 
 
