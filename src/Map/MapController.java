@@ -24,7 +24,7 @@ public class MapController<E, S> {
 
     public void getCards (String url) throws IOException {
         ArrayList<String> cardSet = new ArrayList<>();
-        BufferedReader reader = new BufferedReader(new FileReader("cards_desc.txt"));
+        BufferedReader reader = new BufferedReader(new FileReader(url));
         String a;
 
         while ((a = reader.readLine()) != null) cardSet.add(a);
