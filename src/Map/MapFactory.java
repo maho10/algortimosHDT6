@@ -9,10 +9,9 @@ public class MapFactory<E,S> {
 
     public Map<E,S> getMap(int mapType){
         return switch (mapType) {
-            case 1 -> new HashMap<>();
-            case 2 -> new TreeMap<>();
-            case 3 -> new LinkedHashMap<>();
-            default -> null;
+            case 1 -> new HashMap<E,S>();
+            case 2 -> new TreeMap<E,S>();
+            default -> new LinkedHashMap<E,S>();
         };
     }
 }

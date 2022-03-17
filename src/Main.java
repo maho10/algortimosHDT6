@@ -1,6 +1,7 @@
 import Map.MapFactory;
 
-import java.util.Scanner;
+import java.util.*;
+import java.io.File;
 import java.util.Map;
 
 import java.io.IOException;
@@ -8,14 +9,34 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) throws IOException {
         Vista v = new Vista();
-        MapFactory myMapFactory = new MapFactory();
-        Map myMap;
+        MapFactory<String, String> myMapFactory = new MapFactory<String, String>();
+        FileReader lector = new FileReader();
 
         v.bienvenida();
         int map_type = v.solicitar_map_type();
         int desicion_menu = 0;
 
-        myMap = myMapFactory.getMap(map_type);
+        Map<String, String> myMap = myMapFactory.getMap(map_type);
+
+        // myMap.put("hello", "gg");
+        // System.out.println(myMap.get("hello"));
+        // System.out.println();
+
+        ArrayList<ArrayList<String>> datos = lector.leer_archivo();
+        int cantidad_cartas = datos.get(0).size();
+        
+        // for(int k = 0; k<cantidad_cartas ;k++){
+        //     myMap.put(datos.get(0).get(k), datos.get(1).get(k));
+        // }
+
+        // for(int i = 0; i<myMap.size() ;i++){
+        //     System.out.println(myMap.get("Altergeist Pixiel"));
+        // }
+
+        //NOOO
+        // for(int k = 0; k<datos.get(0).size() ;k++){
+        //     System.out.println(datos.get(0).get(k));
+        // }
 
         boolean continuar_menu_principal = true;
 
@@ -56,8 +77,8 @@ public class Main {
             
                 //Finalizar batalla
                 default:
-                    continuar_menu_principal = false;
                     v.despedida();
+                    continuar_menu_principal = false;
                     break;
             }
         }
@@ -69,8 +90,8 @@ class Vista{
     private Scanner scan = new Scanner(System.in);
 
     private int solicitar_int(String s, int inferior, int superior){
-        inferior -= 1;
-        superior += 1;
+        int new_inferior = (inferior - 1);
+        int new_superior = (superior + 1);
         int entero = 0;
         boolean continuar = true;
             while(continuar){
@@ -78,18 +99,18 @@ class Vista{
                 System.out.print(s);
                 this.scan = new Scanner(System.in);
                 int numero = scan.nextInt();
-                if((numero>inferior)&&(numero<superior)){
+                if((numero>new_inferior)&&(numero<new_superior)){
                     entero = numero;
                     System.out.println("--------------------------------------------------------");
                     continuar = false; 
                 }
                 else{
-                    System.out.println("\t Error: debe de ingresar un entero de 1 y 3.");   
+                    System.out.println("\t Error: debe de ingresar un entero de " + inferior + " a " + superior + ".");   
                     System.out.println();              
                 }
                 }
                 catch(Exception e){
-                    System.out.println("\t Error: debe de ingresar un entero de 1 y 3.");
+                    System.out.println("\t Error: debe de ingresar un entero de " + inferior + " a " + superior + ".");
                     System.out.println();
                 }
             }
@@ -110,6 +131,10 @@ class Vista{
     }
 
     public int solicitar_map_type(){
+        System.out.println("Seleccionar tipo de Map!");
+        System.out.println("1. HashMap");
+        System.out.println("2. TreeMap");
+        System.out.println("3. LinkedHashMap");
         String s = "Ingrese el tipo de Map que desee utilizar: ";
         int map_type = solicitar_int(s, 1, 3); 
         System.out.print("Felicidades!!! ha decidido utilizar ");
@@ -164,4 +189,41 @@ class Vista{
 
 
 
+}
+
+class FileReader{
+    
+    public ArrayList<ArrayList<String>> leer_archivo(){
+        ArrayList<ArrayList<String>> datos = new ArrayList<ArrayList<String>>();
+        ArrayList<String> nombre_de_carta = new ArrayList<String>();
+        ArrayList<String> tipos_de_carta = new ArrayList<String>();
+        
+        try{
+            
+            String i = "cards_desc.txt";
+            File myFile = new File(i);
+            Scanner scan = new Scanner(myFile);
+
+            String j = "";
+
+            while(scan.hasNextLine()){
+                j = scan.nextLine();
+                // System.out.println(j);
+                String[] datos_carta = j.split("|");
+                System.out.println(datos_carta[0]);
+                nombre_de_carta.add(datos_carta[0]);
+                tipos_de_carta.add(datos_carta[1]);
+            }
+
+            datos.add(nombre_de_carta);
+            datos.add(tipos_de_carta);
+
+        }
+        catch(Exception e){
+            String s = "FileReader: leer_archivo(): "+e.getMessage();
+            throw new RuntimeException(s);
+        }
+
+        return datos;
+    }
 }
