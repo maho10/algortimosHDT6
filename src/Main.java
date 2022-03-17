@@ -1,4 +1,5 @@
 import Map.MapFactory;
+import Map.MapController;
 
 import java.util.*;
 import java.io.File;
@@ -8,36 +9,15 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        Vista v = new Vista();
-        MapFactory<String, String> myMapFactory = new MapFactory<String, String>();
-        FileReader lector = new FileReader();
+        Vista v = new Vista();        
 
         v.bienvenida();
         int map_type = v.solicitar_map_type();
+
+        MapController<String, String> myMap = new MapController<String, String>(map_type);
+        myMap.getCards("cards_desc.txt");
+
         int desicion_menu = 0;
-
-        Map<String, String> myMap = myMapFactory.getMap(map_type);
-
-        // myMap.put("hello", "gg");
-        // System.out.println(myMap.get("hello"));
-        // System.out.println();
-
-        ArrayList<ArrayList<String>> datos = lector.leer_archivo();
-        int cantidad_cartas = datos.get(0).size();
-        
-        // for(int k = 0; k<cantidad_cartas ;k++){
-        //     myMap.put(datos.get(0).get(k), datos.get(1).get(k));
-        // }
-
-        // for(int i = 0; i<myMap.size() ;i++){
-        //     System.out.println(myMap.get("Altergeist Pixiel"));
-        // }
-
-        //NOOO
-        // for(int k = 0; k<datos.get(0).size() ;k++){
-        //     System.out.println(datos.get(0).get(k));
-        // }
-
         boolean continuar_menu_principal = true;
 
         while(continuar_menu_principal){
@@ -47,32 +27,62 @@ public class Main {
 
                 //Agregar Carta a coleccion
                 case 1:
-                    
+                    String name = v.get_card_name();
+                    int user = v.get_user_number();
+
+                    boolean carta_agregada = myMap.userCards(name, user);
+
+                    System.out.println();
+                    if(carta_agregada){
+                        System.out.println("Carta agregada exitosamente !");
+                    }
+                    else{
+                        System.out.println("Carta no agregada.");
+                    }
+                    System.out.println("--------------------------------------------------------");
+
                     break;
 
                 //Mostrar tipo de Carta especifica
                 case 2:
 
+                    String carta_especifica = v.get_specific_card();
+                    String carta = myMap.showCardType(carta_especifica);
+                    System.out.println("Tipo de carta: "+carta);
+                    System.out.println("--------------------------------------------------------");
+
                     break;
 
                 //Mostrar coleccion de usuario
                 case 3:
-                    
+                    int user1 = v.get_user_number();
+                    System.out.println();    
+                    System.out.println("Mostrando coleccion de usuario...");
+                    System.out.println(myMap.showCollection(user1, false));
                     break;
 
                 //Mostrar coleccion de usuario ordenada
                 case 4:
-
+                    int user2 = v.get_user_number();
+                    System.out.println();    
+                    System.out.println("Mostrando coleccion de usuario ordenadas...");
+                    System.out.println(myMap.showCollection(user2, true));
                     break;
 
                 //Mostrar todas las cartas existentes
                 case 5:
-                    
+                    System.out.println();
+                    System.out.println("Mostrando cartas existentes...");
+                    System.out.println(myMap.showAllCards(false));
+                    v.separador();
                     break;
 
                 //Mostrar todas las cartas existentes ordenadas
                 case 6:
-
+                    System.out.println();
+                    System.out.println("Mostrando cartas existentes ordenadas...");
+                    System.out.println(myMap.showAllCards(true));
+                    v.separador();
                     break;
             
                 //Finalizar batalla
@@ -116,6 +126,30 @@ class Vista{
             }
         
         return entero;
+    }
+
+    private String solicitar_string(String s){
+        String txt = "";
+        boolean continuar = true;
+        try{
+            System.out.println(s);
+            while(continuar){
+                this.scan = new Scanner(System.in);
+                String texto = scan.nextLine();
+                if(texto.equals("")){
+                    System.out.println("\t Error: debe de ingresar un texto valido.");
+                }
+                else{
+                    txt = texto;
+                    System.out.println("--------------------------------------------------------");
+                    continuar = false;                   
+                }
+            }
+        }
+        catch(Exception e){
+            System.out.println("\t Error: debe de ingresar un texto valido.");
+        }
+        return txt;
     }
 
     public void bienvenida(){
@@ -180,6 +214,7 @@ class Vista{
     public void despedida(){
         System.out.println();
         System.out.println("--------------------------------------------------------");
+        System.out.println("BATALLLA FINALIZADA!!!!");
         System.out.println("Muchas gracias por utilizar nuestro programa!!!");
         System.out.println();
         System.out.println("Vuelve pronto!");
@@ -187,43 +222,30 @@ class Vista{
         System.out.println();
     }
 
-
-
-}
-
-class FileReader{
-    
-    public ArrayList<ArrayList<String>> leer_archivo(){
-        ArrayList<ArrayList<String>> datos = new ArrayList<ArrayList<String>>();
-        ArrayList<String> nombre_de_carta = new ArrayList<String>();
-        ArrayList<String> tipos_de_carta = new ArrayList<String>();
-        
-        try{
-            
-            String i = "cards_desc.txt";
-            File myFile = new File(i);
-            Scanner scan = new Scanner(myFile);
-
-            String j = "";
-
-            while(scan.hasNextLine()){
-                j = scan.nextLine();
-                // System.out.println(j);
-                String[] datos_carta = j.split("|");
-                System.out.println(datos_carta[0]);
-                nombre_de_carta.add(datos_carta[0]);
-                tipos_de_carta.add(datos_carta[1]);
-            }
-
-            datos.add(nombre_de_carta);
-            datos.add(tipos_de_carta);
-
-        }
-        catch(Exception e){
-            String s = "FileReader: leer_archivo(): "+e.getMessage();
-            throw new RuntimeException(s);
-        }
-
-        return datos;
+    public void separador(){
+        System.out.println("--------------------------------------------------------");
     }
+
+    public String get_card_name(){
+        System.out.println();
+        String s = "Ingrese el nombre de la carta deseada: ";
+        String card_name = solicitar_string(s);
+        return card_name;
+    }
+
+    public int get_user_number(){
+        System.out.println();
+        String s = "Ingrese el numero de usuario: ";
+        int user_number = solicitar_int(s, 0, 1000);
+        return user_number;
+    }
+
+    public String get_specific_card(){
+        System.out.println();
+        String s = "Ingrese el nombre de la carta especifica: ";
+        String card_name = solicitar_string(s);
+        return card_name;
+    }
+
+
 }
