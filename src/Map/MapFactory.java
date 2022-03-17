@@ -11,7 +11,8 @@ public class MapFactory<E,S> {
         return switch (mapType) {
             case 1 -> new HashMap<E,S>();
             case 2 -> new TreeMap<E,S>();
-            default -> new LinkedHashMap<E,S>();
+            case 3 -> new LinkedHashMap<E,S>();
+            default -> null;
         };
     }
 }
