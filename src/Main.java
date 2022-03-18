@@ -15,7 +15,7 @@ public class Main {
         int map_type = v.solicitar_map_type();
 
         MapController<String, String> myMap = new MapController<String, String>(map_type);
-        myMap.getCards("cards_desc.txt");
+        myMap.getCards(v.solicitarSet());
 
         int desicion_menu = 0;
         boolean continuar_menu_principal = true;
@@ -26,70 +26,64 @@ public class Main {
             switch (desicion_menu) {
 
                 //Agregar Carta a coleccion
-                case 1:
+                case 1 -> {
                     String name = v.get_card_name();
                     int user = v.get_user_number();
-
                     boolean carta_agregada = myMap.userCards(name, user);
-
                     System.out.println();
-                    if(carta_agregada){
+                    if (carta_agregada) {
                         System.out.println("Carta agregada exitosamente !");
-                    }
-                    else{
+                    } else {
                         System.out.println("Carta no agregada.");
                     }
                     System.out.println("--------------------------------------------------------");
-
-                    break;
+                }
 
                 //Mostrar tipo de Carta especifica
-                case 2:
-
+                case 2 -> {
                     String carta_especifica = v.get_specific_card();
                     String carta = myMap.showCardType(carta_especifica);
-                    System.out.println("Tipo de carta: "+carta);
+                    System.out.println("Tipo de carta: " + carta);
                     System.out.println("--------------------------------------------------------");
-
-                    break;
+                }
 
                 //Mostrar coleccion de usuario
-                case 3:
+                case 3 -> {
                     int user1 = v.get_user_number();
-                    System.out.println();    
+                    System.out.println();
                     System.out.println("Mostrando coleccion de usuario...");
                     System.out.println(myMap.showCollection(user1, false));
-                    break;
+                }
 
                 //Mostrar coleccion de usuario ordenada
-                case 4:
+                case 4 -> {
                     int user2 = v.get_user_number();
-                    System.out.println();    
+                    System.out.println();
                     System.out.println("Mostrando coleccion de usuario ordenadas...");
                     System.out.println(myMap.showCollection(user2, true));
-                    break;
+                }
 
                 //Mostrar todas las cartas existentes
-                case 5:
+                case 5 -> {
                     System.out.println();
                     System.out.println("Mostrando cartas existentes...");
                     System.out.println(myMap.showAllCards(false));
                     v.separador();
-                    break;
+                }
 
                 //Mostrar todas las cartas existentes ordenadas
-                case 6:
+                case 6 -> {
                     System.out.println();
                     System.out.println("Mostrando cartas existentes ordenadas...");
                     System.out.println(myMap.showAllCards(true));
                     v.separador();
-                    break;
-            
+                }
+
                 //Finalizar batalla
-                default:
+                default -> {
                     v.despedida();
                     continuar_menu_principal = false;
-                    break;
+                }
             }
         }
 
@@ -173,17 +167,9 @@ class Vista{
         int map_type = solicitar_int(s, 1, 3); 
         System.out.print("Felicidades!!! ha decidido utilizar ");
         switch (map_type) {
-            case 1:
-                System.out.println("HashMap!");
-                break;
-
-            case 2:
-                System.out.println("TreeMap!");
-                break;
-        
-            default:
-                System.out.println("LinkedHashMap!");
-                break;
+            case 1 -> System.out.println("HashMap!");
+            case 2 -> System.out.println("TreeMap!");
+            default -> System.out.println("LinkedHashMap!");
         }
         System.out.println("--------------------------------------------------------");
         System.out.println("Estamos listos para iniciar el campo de batalla!!!");
@@ -192,12 +178,18 @@ class Vista{
         return map_type;
     }
 
+    public String solicitarSet(){
+        System.out.println("Ingrese el set de cartas con el que va a jugar:");
+        String set = solicitar_string(" ");
+        return set;
+    }
+
     public int menu_principal(){
         System.out.println();
         System.out.println("--------------------------------------------------------");
         System.out.println("------------------- MENU PRINCIPAL ---------------------");
         System.out.println("--------------------------------------------------------");
-        System.out.println("1. Agregar Carta a coleccion.");
+        System.out.println("1. Agregar carta a la colección del usuario.");
         System.out.println("2. Mostrar tipo de Carta especifica.");
         System.out.println("3. Mostrar coleccion de usuario.");
         System.out.println("4. Mostrar coleccion de usuario ordenada.");
@@ -206,8 +198,7 @@ class Vista{
         System.out.println("7. Finalizar batalla.");
         System.out.println();
         String s = "Ingrese su desicion: ";
-        int desision = solicitar_int(s, 1, 7);
-        return desision;
+        return solicitar_int(s, 1, 7);
     }
 
 
@@ -229,22 +220,19 @@ class Vista{
     public String get_card_name(){
         System.out.println();
         String s = "Ingrese el nombre de la carta deseada: ";
-        String card_name = solicitar_string(s);
-        return card_name;
+        return solicitar_string(s);
     }
 
     public int get_user_number(){
         System.out.println();
         String s = "Ingrese el numero de usuario: ";
-        int user_number = solicitar_int(s, 0, 1000);
-        return user_number;
+        return solicitar_int(s, 0, 1000);
     }
 
     public String get_specific_card(){
         System.out.println();
         String s = "Ingrese el nombre de la carta especifica: ";
-        String card_name = solicitar_string(s);
-        return card_name;
+        return solicitar_string(s);
     }
 
 

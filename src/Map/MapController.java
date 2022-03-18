@@ -114,7 +114,7 @@ public class MapController<E, S> {
         StringBuilder spell = new StringBuilder("Hechizos\n-------------------------\n");
         StringBuilder trap = new StringBuilder("Trampas\n-------------------------\n");
         StringBuilder card = new StringBuilder("");
-
+        long start = System.nanoTime();
         if(!organized){
             for(String s: cards.keySet()){
                 int cardType = cards.get(s);
@@ -137,6 +137,8 @@ public class MapController<E, S> {
 
             card.append(monster).append(trap).append(spell);
         }
+        long end = System.nanoTime();
+        System.out.println(end - start);
         return String.valueOf(card);
     }
 }
